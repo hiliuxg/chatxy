@@ -15,4 +15,4 @@
 .hypothesis_profile.*
 .hypothesis_display
 .hypothesis_display.*
-.streamlit
+.streamlit/secrets.toml

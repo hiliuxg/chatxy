@@ -21,7 +21,7 @@ model = genai.GenerativeModel('gemini-pro-vision')
 
 
 st.title('Chat To XYthing')
-st.caption('Upload A Image And Talk To, Powerd By Google Gemini Pro Vision.')
+st.caption('Upload a image and talk to, powerd by google gemini pro vision.')
 
 
 image = None

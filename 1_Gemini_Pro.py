@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 st.title('Chat To XYthing')
-st.caption('AI Chatbot That Can Talk To Anything, Powerd By Google Gemini Pro.')
+st.caption('AI chatbot that can talk to anything, powerd by google gemini pro.')
 
 with st.sidebar:
     if st.button("Start A New Chat", use_container_width = True, type="primary"):
