@@ -24,7 +24,7 @@ st.set_page_config(
 )
 
 st.title("中英互译助手")
-st.caption("输入您需要翻译的语句，我将完成翻译~")
+st.caption("输入您要翻译的中文或英文语句，我将完成翻译~")
 
 
 with st.sidebar:
