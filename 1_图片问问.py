@@ -17,10 +17,10 @@ st.set_page_config(
 genai.configure(api_key = st.secrets["APP_KEY"]) 
 model = genai.GenerativeModel('gemini-pro-vision')
 
-st.title('上传图片')
+st.title('上传图片问问')
 
 
-def show_message(prompt, image, loading_str, tips = None):
+def show_message(prompt, image, loading_str):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         message_placeholder.markdown(loading_str)
@@ -63,9 +63,9 @@ if len(st.session_state.history_pic) == 0 and image is not None:
     tips = """接下来，您可以尝试输入以下问题
 * 基于该图片的氛围或者意境，以第一人称，帮忙我生成1条微信朋友圈文案
 * 根据这张图片写一篇简短的小红书推文，它应该包括对照片内容的描述，吸引人点击"""
-    with st.chat_message("assistant"):
-        st.markdown(tips)
-        st.session_state.history_pic.append({"role": "assistant", "text": tips})
+    #with st.chat_message("assistant"):
+    #    st.markdown(tips)
+    #    st.session_state.history_pic.append({"role": "assistant", "text": tips})
     
 else:
     for item in st.session_state.history_pic:
@@ -73,9 +73,6 @@ else:
             st.markdown(item["text"])
 
 if prompt := st.chat_input(""):
-
-    
-
     if image is None:
         st.warning("请您先上传图片", icon="⚠️")
     else:
@@ -85,9 +82,6 @@ if prompt := st.chat_input(""):
             st.session_state.history_pic.append({"role": "user", "text": prompt})
            
         prompt_plus = f'基于该图片，解决用户问题  \n用户问题："""{prompt}"""'
-        show_message(prompt_plus, image, "正在思考...", tips = """接下来，您可以尝试输入或修改以下问题：
-                 - 基于该图片的氛围或者意境，以第一人称，帮忙我生成1条微信朋友圈文案
-                 - 根据这张图片写一篇简短的小红书推文，它应该包括对照片内容的描述，吸引人点击
-                """)
+        show_message(prompt_plus, image, "正在思考...")
         
 
