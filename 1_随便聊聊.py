@@ -45,9 +45,10 @@ if prompt := st.chat_input(""):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         message_placeholder.markdown("正在思考...")
-        full_response = ""
         try:
+            full_response = ""
             for chunk in chat.send_message(prompt, stream=True, safety_settings = SAFETY_SETTTINGS):
+                print(f"chat：{chunk}")
                 word_count = 0
                 random_int = random.randint(5, 10)
                 for word in chunk.text:
