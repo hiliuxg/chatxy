@@ -13,19 +13,28 @@ st.set_page_config(
     }
 )
 
+generation_config = {
+  "temperature": 0.9,
+  "top_p": 1,
+  "max_output_tokens": 4096,
+}
 genai.configure(api_key = st.secrets["APP_KEY"]) 
 model = genai.GenerativeModel('gemini-pro-vision')
 
 st.title('上传图片问问')
 
+with st.sidebar:
+    generation_config['temperature'] = st.slider("Temperature", min_value  = 0.0, max_value = 1.0, value = 0.7, step = 0.1, label_visibility = "collapsed")
+    st.caption("ℹ️ 该值越大输出越随机")
+
+
 def show_message(prompt, image, loading_str):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        message_placeholder.markdown(loading_str)
-        full_response = ""
+        message_placeholder.markdown(loading_str) 
         try:
-            print(f"prompt:{prompt}")
-            for chunk in model.generate_content([prompt, image], stream = True, safety_settings = SAFETY_SETTTINGS):                   
+            full_response = ""
+            for chunk in model.generate_content([prompt, image], stream = True, safety_settings = SAFETY_SETTTINGS, generation_config = generation_config):                   
                 word_count = 0
                 random_int = random.randint(5, 10)
                 for word in chunk.text:
@@ -36,12 +45,14 @@ def show_message(prompt, image, loading_str):
                         message_placeholder.markdown(full_response + "_")
                         word_count = 0
                         random_int = random.randint(5, 10)
+            message_placeholder.markdown(full_response)
         except genai.types.generation_types.BlockedPromptException as e:
+            print(e)
             st.warning("发送内容有敏感信息，请重新输入", icon = "⚠️")
         except Exception as e:
-            st.error("完蛋，后台出错了，请换张图片", icon = "🚨")
             print(e)
-        message_placeholder.markdown(full_response)
+            st.error("完蛋，后台出错了，请换张图片", icon = "🚨")
+       
         st.session_state.history_pic.append({"role": "assistant", "text": full_response})
 
 if "history_pic" not in st.session_state:
@@ -87,6 +98,7 @@ if prompt := st.chat_input(""):
     if image is None:
         st.warning("请您先上传图片", icon="⚠️")
     else:
+        print(f"pic prompt: {prompt}")
         prompt = prompt.replace('\n', '  \n')
         with st.chat_message("user"):
             st.markdown(prompt)
