@@ -81,7 +81,6 @@ if prompt := st.chat_input(""):
       
         try:
             full_response = ""
-            print(generation_config)
             for chunk in model.generate_content(prompt_plus, stream = True, safety_settings = SAFETY_SETTTINGS, generation_config = generation_config):                   
                 word_count = 0
                 random_int = random.randint(5, 10)
