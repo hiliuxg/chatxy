@@ -65,6 +65,9 @@ image = None
 uploaded_file = st.file_uploader("选择一张图片...", type=["jpg", "png", "jpeg", "gif"], label_visibility='collapsed', on_change = clear_state)
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
+    width, height = image.size
+    resized_img = image.resize((128, int(height/(width/128))), Image.LANCZOS)
+    resized_img.getdata
     st.image(image)    
 
 if len(st.session_state.history_pic) == 0 and image is not None:
@@ -87,7 +90,7 @@ if len(st.session_state.history_pic) == 0 and image is not None:
 1. <写入问题1>
 2. <写入问题2>
 3. <写入问题3>"""
-    show_message(prompt, image, "正在解读图片...")
+    show_message(prompt, resized_img, "正在解读图片...")
     
 else:
     for item in st.session_state.history_pic:
@@ -105,4 +108,4 @@ if prompt := st.chat_input(""):
             st.session_state.history_pic.append({"role": "user", "text": prompt})
            
         prompt_plus = f'基于该图片，回答用户问题  \n用户问题："""{prompt}"""'
-        show_message(prompt_plus, image, "正在思考...")
+        show_message(prompt_plus, resized_img, "正在思考...")
