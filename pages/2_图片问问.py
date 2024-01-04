@@ -67,7 +67,6 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     width, height = image.size
     resized_img = image.resize((128, int(height/(width/128))), Image.LANCZOS)
-    resized_img.getdata
     st.image(image)    
 
 if len(st.session_state.history_pic) == 0 and image is not None:
